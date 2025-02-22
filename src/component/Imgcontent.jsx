@@ -28,7 +28,7 @@ const Imgcontent = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
-    }, 3000); // Change slide every 3 seconds
+    }, 4000); // Change slide every 4 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -46,29 +46,27 @@ const Imgcontent = () => {
   };
 
   return (
-    <div className="relative w-full min-h-96 bg-white rounded-lg overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden">
       {/* Image Slide Container */}
-      <div
-        className="w-full h-full flex transition-transform duration-700 ease-in-out"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
+      <div className="relative w-full h-full">
         {slides.map((slide, index) => (
-          <div key={index} className="w-full flex-shrink-0 relative">
+          <div
+            key={index}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+              currentIndex === index ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          >
             <img
               src={slide.image}
               alt={`Slide ${index + 1}`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover" // Ensures full-width images
             />
-            {/* Left-aligned Text & Button */}
-            <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-start text-white px-8 sm:px-16 transition-opacity duration-700">
-              <h1
-                className={`text-4xl sm:text-5xl font-extrabold uppercase mb-4 transition-transform duration-700 ${
-                  currentIndex === index ? "translate-x-0 opacity-100" : "-translate-x-6 opacity-0"
-                }`}
-              >
+            {/* Overlay & Text */}
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-center px-4 sm:px-12">
+              <h1 className="text-3xl sm:text-5xl font-extrabold uppercase mb-4 transition-all duration-700">
                 {slide.text}
               </h1>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-lg font-semibold transition">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 sm:px-6 sm:py-3 rounded-lg text-lg font-semibold transition-all">
                 {slide.buttonText}
               </button>
             </div>
@@ -79,16 +77,9 @@ const Imgcontent = () => {
       {/* Previous Button */}
       <button
         onClick={prevSlide}
-        className="absolute inset-y-0 left-0 flex justify-center items-center w-[46px] h-full bg-gray-800/50 text-white hover:bg-gray-900/80"
+        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-gray-900/70 text-white rounded-full hover:bg-gray-900/90 sm:p-4"
       >
-        <svg
-          className="size-5"
-          width={24}
-          height={24}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
+        <svg className="size-6 sm:size-7" fill="none" stroke="currentColor" strokeWidth={2}>
           <path d="m15 18-6-6 6-6" />
         </svg>
       </button>
@@ -96,27 +87,20 @@ const Imgcontent = () => {
       {/* Next Button */}
       <button
         onClick={nextSlide}
-        className="absolute inset-y-0 right-0 flex justify-center items-center w-[46px] h-full bg-gray-800/50 text-white hover:bg-gray-900/80"
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-gray-900/70 text-white rounded-full hover:bg-gray-900/90 sm:p-4"
       >
-        <svg
-          className="size-5"
-          width={24}
-          height={24}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
+        <svg className="size-6 sm:size-7" fill="none" stroke="currentColor" strokeWidth={2}>
           <path d="m9 18 6-6-6-6" />
         </svg>
       </button>
 
       {/* Pagination Dots */}
-      <div className="absolute bottom-3 left-0 right-0 flex justify-center space-x-2">
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
         {slides.map((_, index) => (
           <div
             key={index}
-            className={`size-3 rounded-full border ${
-              currentIndex === index ? "bg-blue-900 border-blue-700" : "border-gray-400"
+            className={`size-3 sm:size-4 rounded-full border ${
+              currentIndex === index ? "bg-blue-600 border-blue-500" : "border-gray-400"
             }`}
           ></div>
         ))}
